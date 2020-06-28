@@ -12,4 +12,4 @@ jobs:
           - x64
     steps:
       - run: |
-          julia --project -e 'using Pkg; Pkg.add(PackageSpec(url = "https://github.com/aminya/GitHubActions.jl", rev = "test")); using GitHubActions; println(GitHubActions.get_event())'
+          julia --project -e 'using Pkg; Pkg.add(PackageSpec(url = "https://github.com/aminya/GitHubActions.jl", rev = "test")); using GitHubActions; println(EVENT)'
