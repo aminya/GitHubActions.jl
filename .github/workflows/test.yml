@@ -1,0 +1,15 @@
+name: test
+on:
+  - push
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+        arch:
+          - x64
+    steps:
+      - run: |
+          echo ${{github.event_path}}
