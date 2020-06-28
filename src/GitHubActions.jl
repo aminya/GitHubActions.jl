@@ -2,6 +2,8 @@ module GitHubActions
 
 export
     GitHubActionsLogger,
+    isinCI,
+    EVENT,
     add_path,
     end_group,
     get_input,
@@ -20,6 +22,7 @@ export
 
 using Logging: Logging, AbstractLogger, Debug, Info, Warn, Error
 
+import JSON
 using JSON: json
 
 const CMD_MARKER = "::"
@@ -42,12 +45,31 @@ cmd_value(s::AbstractString) = s
 cmd_value(x) = json(x)
 
 """
-Returns the event.json content as a Dict
+    isinCI()
+Returns true if running in CI env
+"""
+isinCI() = get(ENV, "CI", nothing) !== nothing ? true : false
+
+"""
+    get_event()
+Returns the event.json content as a Dict.
+Returns `nothing` if the current environment is not CI.
 """
 function get_event()
-    filename = ENV["GITHUB_EVENT_PATH"]
-    return JSON.parsefile(filename; dicttype=Dict, inttype=Int64, use_mmap=true)
+    if isinCI()
+        filename = ENV["GITHUB_EVENT_PATH"]
+        return JSON.parsefile(filename; dicttype=Dict, inttype=Int64, use_mmap=true)
+    else
+        return nothing
+    end
 end
+
+"""
+    EVENT
+Current event.json as a Dict.
+It will be `nothing` if the current environment is not CI.
+"""
+EVENT = get_event()
 
 function esc_prop(val)
     s = cmd_value(val)
