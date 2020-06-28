@@ -12,4 +12,5 @@ jobs:
           - x64
     steps:
       - run: |
+          cat  ${{github.event_path}}
           echo ${{github.event.repository.html_url}}
