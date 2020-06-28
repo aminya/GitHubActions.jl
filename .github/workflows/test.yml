@@ -12,8 +12,4 @@ jobs:
           - x64
     steps:
       - run: |
-          echo ${{github.event_path}}
-      - name: Upload all
-        uses: actions/upload-artifact@v2
-        with:
-          path: ${{github.event_path}}
+          echo ${{github.event.repository.html_url}}
