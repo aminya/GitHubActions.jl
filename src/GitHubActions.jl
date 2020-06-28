@@ -41,6 +41,14 @@ cmd_value(::Nothing) = ""
 cmd_value(s::AbstractString) = s
 cmd_value(x) = json(x)
 
+"""
+Returns the event.json content as a Dict
+"""
+function get_event()
+    filename = ENV["GITHUB_EVENT_PATH"]
+    return JSON.parsefile(filename; dicttype=Dict, inttype=Int64, use_mmap=true)
+end
+
 function esc_prop(val)
     s = cmd_value(val)
     s = replace(s, '%' => "%25")
